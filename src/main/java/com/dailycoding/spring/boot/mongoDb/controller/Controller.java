@@ -1,25 +1,36 @@
 package com.dailycoding.spring.boot.mongoDb.controller;
 
 import com.dailycoding.spring.boot.mongoDb.models.Student;
-import com.dailycoding.spring.boot.mongoDb.repository.StudentRepository;
+import com.dailycoding.spring.boot.mongoDb.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class Controller {
     @Autowired
-    StudentRepository studentRepository;
+    private StudentService studentService;
 
     @PostMapping("/student/new")
-    public ResponseEntity<?> addStudent(@RequestBody Student student){
-        Student save = this.studentRepository.save(student);
-        return  ResponseEntity.ok(save);
+    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+        Student savedStudent = studentService.saveStudents(student);
+        return  new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
 
     @GetMapping("/students")
-    public ResponseEntity<?> fetchAllStudents(){
-        return ResponseEntity.ok(this.studentRepository.findAll());
+    public ResponseEntity<List<Student>> fetchAllStudents(){
+        List<Student> students = studentService.fetchStudents();
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
+    @GetMapping("/students/{id}")
+    public ResponseEntity<Optional<Student>> fetchStudentById(@PathVariable Integer id){
+        Optional<Student> student = studentService.fetchStudentById(id);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
 }
