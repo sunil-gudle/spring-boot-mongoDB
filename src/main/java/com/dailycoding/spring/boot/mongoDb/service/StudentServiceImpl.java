@@ -10,7 +10,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService{
@@ -22,13 +21,12 @@ public class StudentServiceImpl implements StudentService{
     public Student saveStudents(Student student){
         if (studentRepository.existsById(student.getId())){
             throw new IdAlreadyExistsException("Student with id " + student.getId() + " already exists!");
-        }else {
-            try {
+        }
+        try {
                 return studentRepository.save(student);
             } catch (DuplicateKeyException e) {
                 throw new EmailAlreadyExistsException("Email '" + student.getEmail() + "' already exist!");
             }
-        }
     }
 
     @Override
@@ -37,12 +35,10 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Optional<Student> fetchStudentById(Integer id) {
-        try {
-            return studentRepository.findById(id);
-        }catch (RuntimeException e){
-            throw new ResourceNotFoundException("No Data found");
-        }
+    public Student fetchStudentById(Integer id) {
+            return studentRepository.findById(id)
+                    .orElseThrow(()-> new ResourceNotFoundException("Student with id " + id + " not found"));
+
     }
 
 
