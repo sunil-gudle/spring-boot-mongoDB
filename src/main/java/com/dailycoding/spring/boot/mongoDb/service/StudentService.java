@@ -4,7 +4,6 @@ import com.dailycoding.spring.boot.mongoDb.models.Student;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface StudentService {
@@ -15,5 +14,5 @@ public interface StudentService {
 
     List<Student> fetchStudents();
 
-    Optional<Student> fetchStudentById(Integer id);
+    Student fetchStudentById(Integer id);
 }
