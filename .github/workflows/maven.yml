@@ -27,8 +27,8 @@ jobs:
       - name: Build with Maven (Skip Tests)
         run: mvn clean package -DskipTests
 
-      - name: Update dependency graph
-        if: github.event_name == 'push'
-        uses: advanced-security/maven-dependency-submission-action@v1
-        with:
-          directory: .
+#      - name: Update dependency graph
+#        if: github.event_name == 'push'
+#        uses: advanced-security/maven-dependency-submission-action@v1
+#        with:
+#          directory: .
